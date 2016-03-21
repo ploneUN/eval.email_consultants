@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<layers>
+    <layer name="eval.email_consultants"
+        interface="eval.email_consultants.interfaces.IProductSpecific" />
+</layers>

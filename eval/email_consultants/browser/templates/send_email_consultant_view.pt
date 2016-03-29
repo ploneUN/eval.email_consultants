@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="bexphil.inventory">
+      
+<head>
+      <metal:slot fill-slot="javascript_head_slot">
+            <script>
+                  $(document).ready(function(){
+                        var curr_url = $('span#curr_url').html()+'/consultant_cv_recipients';
+                        var jsonObj = $.parseJSON($('span#default_recipients').html());
+                        
+                        var config = {
+                                theme: 'facebook',
+                                tokenDelimiter: ', ',
+                                preventDuplicates: true,
+                            }
+                        if (jsonObj) {
+                              config['prePopulate'] = jsonObj['prePopulate'];
+                        }
+                        $('textarea#email-recipients').tokenInput(curr_url, config);
+                  });
+            </script>
+        </metal:slot>
+</head>
+
+<body>
+
+<tal:comment tal:condition="nothing">
+    This is a sample view template. It will not be used for rendering the
+    content unless activated by creation of a view class with a matching name.
+    
+    Note that we're using Plone 4 macros. Replace them with Plone 3 macros
+    if needed.
+</tal:comment>
+
+<metal:main fill-slot="content-core">
+  <metal:content-core define-macro="content-core">
+
+   
+    
+    <form method="post">
+      <h3>Email Function</h3>
+      <label>To:</label><br/>
+      <textarea id="email-recipients" name="email-recipients" tal:content="view/submitted_recipients"></textarea>
+      
+      <label>CC:</label><br/>
+      <span style="font-style: italic">Use comma to separate email addresses</span>
+      <textarea id="email-cc" name="email-cc"></textarea>
+      <!--<label>CC:</label><br/>
+      <tal:entry tal:repeat="item batch">
+          <input type="checkbox" name="cc_consultant" tal:attributes="value item/UID"/><span tal:content="item/pretty_title_or_id"></span><br/>
+      </tal:entry>-->
+      
+      <label>Subject</label><br/>
+      <input type="text" name="email-subject"/><br/>
+      
+      <label>Message:</label>
+      <textarea rows="4" cols="25" name="email-msg"></textarea>
+      <br/>
+      
+      <label>Select Consultants</label>
+      <div tal:define="brains view/consultants">
+            <tal:entry tal:repeat="brain brains">
+                <input type="checkbox" name="consultants_name" tal:attributes="value brain/UID; checked python: 'checked' if brain.UID in view.submitted_consultants() else ''"/>&emsp;<span tal:content="brain/Title"/><br/>
+            </tal:entry>
+      </div>
+      
+      <input type="submit" value="Send Email"/>
+  </form>
+
+      <span id="curr_url" tal:content="context/absolute_url" style="display: none"></span>
+      <span id="default_recipients" tal:content="view/submitted_recipients" style="display: none"></span>
+      <span tal:define="dummy view/form_submitted"/>
+      
+  </metal:content-core>
+</metal:main>
+
+</body>
+</html>

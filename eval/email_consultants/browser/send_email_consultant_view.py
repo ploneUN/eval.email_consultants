@@ -23,6 +23,7 @@ import os
 from Products.CMFDefault.utils import checkEmailAddress
 from Products.CMFDefault.exceptions import EmailAddressInvalid
 from email.Header import Header
+from plone import api
 
 grok.templatedir('templates')
 
@@ -126,14 +127,24 @@ class send_email_consultant_view(grok.View):
                         for recipient in recipients.split(','):
                             expanded = False
                             recipient = recipient.strip()
-                            for name, adapter in adapters:
+                            #for name, adapter in adapters:
+                            #    
+                            #    if adapter.can_expand(recipient):
+                            #        expanded_recipients += adapter.expand_value(recipient)
+                            #        expanded = True
+                            #        break
+                            
+                            #if not expanded:
+                            #    expanded_recipients.append(recipient)
+                            
+                            can_expand = self.can_expand(recipient)
+                            if can_expand:
+                                if can_expand == 'user':
+                                    expanded_recipients += self.get_user(recipient)
+                                elif can_expand == 'group':
+                                    expanded_recipients += self.get_group(recipient)
                                 
-                                if adapter.can_expand(recipient):
-                                    expanded_recipients += adapter.expand_value(recipient)
-                                    expanded = True
-                                    break
-                            if not expanded:
-                                expanded_recipients.append(recipient)
+                            
                             
                         self.send_email(
                             recipients=list(set(expanded_recipients)),
@@ -212,6 +223,38 @@ class send_email_consultant_view(grok.View):
         
         statusmessages.add('Emails sent')
         self.request.response.redirect(self.context.absolute_url())
+        
+    
+    def can_expand(self, value):
+        if value.startswith('UserID:'):
+            return 'user'
+        elif value.startswith('Group'):
+            return 'group'
+        return ''
+        
+        
+    def get_user(self, value):
+        username = value.replace('UserID:','')
+        user = api.user.get(username)
+        if not user:
+            return []
+        fullname = user.getProperty('fullname')
+        email = user.getProperty('email')
+        if not email:
+            return []
+        value = '%s <%s>' % (fullname, email)
+        return [value]
+    
+    def get_group(self, value):
+        values = []
+        groupid = value.replace('Group:', '')
+        users = api.user.get_users(groupname=groupid)
+        for user in users:
+            values.append('%s <%s>' % (
+                user.getProperty('fullname'),
+                user.getProperty('email')
+            ))
+        return list(set(values))
         
 
 def validateaddress(value):

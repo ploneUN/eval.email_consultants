@@ -1,5 +1,9 @@
 Changelog
 =========
+1.2 = sept 13, 2016
+---------
+-modified email message
+
 1.1 - may 19 2016
 ------------
 release for production

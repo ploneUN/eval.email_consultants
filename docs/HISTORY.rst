@@ -1,5 +1,8 @@
 Changelog
 =========
+1.4 - sept 16, 2016
+-changed filename of attachment
+
 1.3 = sept 15, 2016
 ------
 -changed email csv to and cc

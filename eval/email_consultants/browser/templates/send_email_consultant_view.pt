@@ -60,7 +60,7 @@
       <div class="field">
             
             <label>CC:
-                  <span class="formHelp">If recipient is not in the user database, type their email addresses here.  Use a comma to separate email addresses</span>
+                  <span class="formHelp">Type valid email addresses below.  Separate email adresses with a comma (john@domain.com,joe@domain.com)</span>
             </label>
             <dl class ="portalMessage error" tal:define="results python: view.error_message('email-cc')" tal:condition="python: results['status']">
                   <dt>Error</dt>

@@ -1,5 +1,9 @@
 Changelog
 =========
+1.3 = sept 15, 2016
+------
+-changed email csv to and cc
+
 1.2 = sept 13, 2016
 ---------
 -modified email message

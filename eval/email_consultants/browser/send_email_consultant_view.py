@@ -196,7 +196,7 @@ class send_email_consultant_view(grok.View):
                 open(zf.filename).close()
                 Encoders.encode_base64(attachment)
                 attachment.add_header('Content-Disposition', 'attachment',
-                               filename='attached_files' + '.zip')
+                               filename='consultant-cvs' + '.zip')
                 msg.attach(attachment)
                 
                 

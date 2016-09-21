@@ -1,5 +1,8 @@
 Changelog
 =========
+1.4v2 - sept 21, 2016
+-added red mark for required
+
 1.4 - sept 16, 2016
 -changed filename of attachment
 

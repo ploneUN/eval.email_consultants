@@ -187,7 +187,7 @@ class send_email_consultant_view(grok.View):
             
             if uploaded_files:
                 
-                zf = zipfile.ZipFile("%s.zip" % timestr, "w", zipfile.ZIP_DEFLATED)
+                zf = zipfile.ZipFile("/tmp/%s.zip" % timestr, "w", zipfile.ZIP_DEFLATED)
                 for uf in uploaded_files:
                     zf.write(uf['file'], uf['filename'])
                 zf.close()
@@ -218,9 +218,9 @@ class send_email_consultant_view(grok.View):
         #    mailhost.send(msg.as_string())
         
         
-        for f in os.listdir('.'):
+        for f in os.listdir('/tmp/'):
             if timestr+'.zip' == f:
-                os.remove(f)
+                os.remove('/tmp/'+f)
         
         statusmessages.add('Emails sent')
         self.request.response.redirect(self.context.absolute_url())

@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.4'
+version = '1.4v2'
 
 setup(name='eval.email_consultants',
       version=version,

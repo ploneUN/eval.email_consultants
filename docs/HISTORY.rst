@@ -1,5 +1,8 @@
 Changelog
 =========
+1.5 - sept 26
+-used /tmp in storing temporary zipped files
+
 1.4v2 - sept 21, 2016
 -added red mark for required
 
